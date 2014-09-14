@@ -1,0 +1,30 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset:4 -*-
+
+def xen_domain_convert(info): 
+    data = {}
+    for line in info:
+        data[line[0]] = line[1:]
+    return data
+
+# Check Domain ID and role
+def inventory_xen_domain_id(info):
+    data = xen_domain_convert(info).keys()
+    if 'id' in data:
+        return [(None, None)]
+
+def check_xen_domain_id(_no_item, _no_params, info):
+    data = xen_domain_convert(info)
+   
+    if "".join(data['id']) == "0":
+        result = "Running as dom0"
+    else:
+        result = "Running as domU Number " + "".join(data['id'])
+
+    return(0, result)
+
+check_info['xen_domain.id'] = {
+    "inventory_function"	: inventory_xen_domain_id,
+    "check_function"		: check_xen_domain_id,
+    "service_description"	: "Xen Domain Type and ID"
+}

@@ -23,24 +23,3 @@ check_info['xen_info.version'] = {
     "service_description"	: "Xen Version"
 }
 
-# Check Domain ID and role
-def inventory_xen_info_id(info):
-    data = xen_info_convert(info).keys()
-    if 'id' in data:
-        return [(None, None)]
-
-def check_xen_info_id(_no_item, _no_params, info):
-    data = xen_info_convert(info)
-   
-    if "".join(data['id']) == "0":
-        result = "Running as dom0"
-    else:
-        result = "Running as domU Number " + "".join(data['id'])
-
-    return(0, result)
-
-check_info['xen_info.id'] = {
-    "inventory_function"	: inventory_xen_info_id,
-    "check_function"		: check_xen_info_id,
-    "service_description"	: "Xen Domain Type and ID"
-}
