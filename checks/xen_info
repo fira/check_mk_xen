@@ -23,3 +23,18 @@ check_info['xen_info.version'] = {
     "service_description"	: "Xen Version"
 }
 
+### CPU Info
+def inventory_xen_info_cpu(info):
+    data = xen_info_convert(info).keys()
+    if 'cpu_amount' in data: 
+        return [(None, None)]
+
+def check_xen_info_cpu(info):
+    data = xen_info_convert(info)
+    return(0, "Xen Node has " + "".join(data['cpu_amount']) " CPUs available");
+
+check_info['xen_info.cpu'] = {
+    "inventory_function"        : inventory_xen_info_cpu,
+    "check_function"            : check_xen_info_cpu,
+    "service_description"       : "Xen Node CPU stats"
+}
