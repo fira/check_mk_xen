@@ -23,24 +23,24 @@ check_info['xen_info.version'] = {
     "service_description"	: "Xen Version"
 }
 
-### Check Virtual Machine UUID and role
-def inventory_xen_info_uuid(info):
+# Check Domain ID and role
+def inventory_xen_info_id(info):
     data = xen_info_convert(info).keys()
-    if 'uuid' in data:
+    if 'id' in data:
         return [(None, None)]
 
-def check_xen_info_uuid(_no_item, _no_params, info):
+def check_xen_info_id(_no_item, _no_params, info):
     data = xen_info_convert(info)
    
-    if "".join(data['uuid']) == "00000000-0000-0000-0000-000000000000":
+    if "".join(data['id']) == "0":
         result = "Running as dom0"
     else:
-        result = "Running as domU: " + "".join(data['uuid'])
+        result = "Running as domU Number " + "".join(data['id'])
 
     return(0, result)
 
-check_info['xen_info.uuid'] = {
-    "inventory_function"	: inventory_xen_info_uuid,
-    "check_function"		: check_xen_info_uuid,
-    "service_description"	: "Xen Domain Type and UUID"
+check_info['xen_info.id'] = {
+    "inventory_function"	: inventory_xen_info_id,
+    "check_function"		: check_xen_info_id,
+    "service_description"	: "Xen Domain Type and ID"
 }
